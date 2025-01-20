@@ -29,30 +29,30 @@ use staking::test_utils::constants::STRK_TOKEN_ADDRESS;
 use staking::types::{Amount, Commission};
 use starknet::{ClassHash, ContractAddress};
 
-pub(crate) mod MainnetAddresses {
+pub mod MainnetAddresses {
     use starknet::{ContractAddress, contract_address_const};
 
-    pub(crate) fn MAINNET_STAKING_CONTRCT_ADDRESS() -> ContractAddress nopanic {
+    pub fn MAINNET_STAKING_CONTRCT_ADDRESS() -> ContractAddress nopanic {
         contract_address_const::<
             0x00ca1702e64c81d9a07b86bd2c540188d92a2c73cf5cc0e508d949015e7e84a7,
         >()
     }
-    pub(crate) fn MAINNET_L2_BRIDGE_ADDRESS() -> ContractAddress nopanic {
+    pub fn MAINNET_L2_BRIDGE_ADDRESS() -> ContractAddress nopanic {
         contract_address_const::<
             0x0594c1582459ea03f77deaf9eb7e3917d6994a03c13405ba42867f83d85f085d,
         >()
     }
-    pub(crate) fn MAINNET_REWARD_SUPPLIER_ADDRESS() -> ContractAddress nopanic {
+    pub fn MAINNET_REWARD_SUPPLIER_ADDRESS() -> ContractAddress nopanic {
         contract_address_const::<
             0x009035556d1ee136e7722ae4e78f92828553a45eed3bc9b2aba90788ec2ca112,
         >()
     }
-    pub(crate) fn MAINNET_MINTING_CURVE_ADDRESS() -> ContractAddress nopanic {
+    pub fn MAINNET_MINTING_CURVE_ADDRESS() -> ContractAddress nopanic {
         contract_address_const::<
             0x00ca1705e74233131dbcdee7f1b8d2926bf262168c7df339004b3f46015b6984,
         >()
     }
-    pub(crate) fn MAINNET_UPGRADE_GOVERNOR() -> ContractAddress nopanic {
+    pub fn MAINNET_UPGRADE_GOVERNOR() -> ContractAddress nopanic {
         contract_address_const::<
             0x0663cc699d9c51b7d4d434e06f5982692167546ce525d9155edb476ac9a117d6,
         >()
@@ -62,7 +62,7 @@ pub(crate) mod MainnetAddresses {
 /// The `StakingRoles` struct represents the various roles involved in the staking contract.
 /// It includes addresses for different administrative and security roles.
 #[derive(Drop, Copy)]
-pub(crate) struct StakingRoles {
+pub struct StakingRoles {
     pub upgrade_governor: ContractAddress,
     pub security_admin: ContractAddress,
     pub security_agent: ContractAddress,
@@ -80,7 +80,7 @@ pub(crate) struct StakingRoles {
 /// - `pool_contract_admin` (ContractAddress): The address of the pool contract administrator.
 /// - `governance_admin` (ContractAddress): The address of the governance administrator.
 #[derive(Drop, Copy)]
-pub(crate) struct StakingConfig {
+pub struct StakingConfig {
     pub min_stake: Amount,
     pub pool_contract_class_hash: ClassHash,
     pub reward_supplier: ContractAddress,
@@ -92,14 +92,14 @@ pub(crate) struct StakingConfig {
 /// The `StakingState` struct represents the state of the staking contract.
 /// It includes the contract address, governance administrator, and roles.
 #[derive(Drop, Copy)]
-pub(crate) struct StakingState {
+pub struct StakingState {
     pub address: ContractAddress,
     pub governance_admin: ContractAddress,
     pub roles: StakingRoles,
 }
 
 #[generate_trait]
-pub(crate) impl StakingImpl of StakingTrait {
+pub impl StakingImpl of StakingTrait {
     fn deploy(self: StakingConfig, token: TokenState) -> StakingState {
         let mut calldata = ArrayTrait::new();
         token.address.serialize(ref calldata);
@@ -173,7 +173,7 @@ pub(crate) impl StakingImpl of StakingTrait {
 /// contract.
 /// It includes addresses for different administrative roles.
 #[derive(Drop, Copy)]
-pub(crate) struct MintingCurveRoles {
+pub struct MintingCurveRoles {
     pub upgrade_governor: ContractAddress,
     pub app_role_admin: ContractAddress,
     pub token_admin: ContractAddress,
@@ -189,7 +189,7 @@ pub(crate) struct MintingCurveRoles {
 /// - `l1_reward_supplier` (felt252).
 /// - `roles` (MintingCurveRoles).
 #[derive(Drop, Copy)]
-pub(crate) struct MintingCurveConfig {
+pub struct MintingCurveConfig {
     pub initial_supply: Amount,
     pub governance_admin: ContractAddress,
     pub l1_reward_supplier: felt252,
@@ -199,7 +199,7 @@ pub(crate) struct MintingCurveConfig {
 /// The `MintingCurveState` struct represents the state of the minting curve contract.
 /// It includes the contract address, governance administrator, and roles.
 #[derive(Drop, Copy)]
-pub(crate) struct MintingCurveState {
+pub struct MintingCurveState {
     pub address: ContractAddress,
     pub governance_admin: ContractAddress,
     pub roles: MintingCurveRoles,
@@ -251,7 +251,7 @@ impl MintingCurveImpl of MintingCurveTrait {
 /// contract.
 /// It includes the address for the upgrade governor role.
 #[derive(Drop, Copy)]
-pub(crate) struct RewardSupplierRoles {
+pub struct RewardSupplierRoles {
     pub upgrade_governor: ContractAddress,
 }
 
@@ -266,7 +266,7 @@ pub(crate) struct RewardSupplierRoles {
 /// - `governance_admin` (ContractAddress): The address of the governance administrator.
 /// - `roles` (RewardSupplierRoles): The roles involved in the reward supplier contract.
 #[derive(Drop, Copy)]
-pub(crate) struct RewardSupplierConfig {
+pub struct RewardSupplierConfig {
     pub base_mint_amount: Amount,
     pub l1_reward_supplier: felt252,
     pub starkgate_address: ContractAddress,
@@ -277,14 +277,14 @@ pub(crate) struct RewardSupplierConfig {
 /// The `RewardSupplierState` struct represents the state of the reward supplier contract.
 /// It includes the contract address, governance administrator, and roles.
 #[derive(Drop, Copy)]
-pub(crate) struct RewardSupplierState {
+pub struct RewardSupplierState {
     pub address: ContractAddress,
     pub governance_admin: ContractAddress,
     pub roles: RewardSupplierRoles,
 }
 
 #[generate_trait]
-pub(crate) impl RewardSupplierImpl of RewardSupplierTrait {
+pub impl RewardSupplierImpl of RewardSupplierTrait {
     fn deploy(
         self: RewardSupplierConfig,
         minting_curve: MintingCurveState,
@@ -345,7 +345,7 @@ struct SystemConfig {
 /// It includes the state for the token, staking, minting curve, and reward supplier contracts,
 /// as well as a base account identifier.
 #[derive(Drop, Copy)]
-pub(crate) struct SystemState<TTokenState> {
+pub struct SystemState<TTokenState> {
     pub token: TTokenState,
     pub staking: StakingState,
     pub minting_curve: MintingCurveState,
@@ -354,7 +354,7 @@ pub(crate) struct SystemState<TTokenState> {
 }
 
 #[generate_trait]
-pub(crate) impl SystemConfigImpl of SystemConfigTrait {
+pub impl SystemConfigImpl of SystemConfigTrait {
     /// Configures the basic staking flow by initializing the system configuration with the
     /// provided staking initialization configuration.
     fn basic_stake_flow_cfg(cfg: StakingInitConfig) -> SystemConfig {
@@ -419,7 +419,7 @@ pub(crate) impl SystemConfigImpl of SystemConfigTrait {
 }
 
 #[generate_trait]
-pub(crate) impl SystemImpl<
+pub impl SystemImpl<
     TTokenState, +TokenTrait<TTokenState>, +Drop<TTokenState>, +Copy<TTokenState>,
 > of SystemTrait<TTokenState> {
     /// Creates a new account with the specified amount.
@@ -454,13 +454,13 @@ pub(crate) impl SystemImpl<
 /// The `Account` struct represents an account in the staking system.
 /// It includes the account's address, amount of tokens, token state, and staking state.
 #[derive(Drop, Copy)]
-pub(crate) struct Account {
+pub struct Account {
     pub address: ContractAddress,
     pub amount: Amount,
 }
 
 #[generate_trait]
-pub(crate) impl AccountImpl of AccountTrait {
+pub impl AccountImpl of AccountTrait {
     fn new(address: felt252, amount: Amount) -> Account {
         Account { address: address.try_into().unwrap(), amount }
     }
@@ -469,7 +469,7 @@ pub(crate) impl AccountImpl of AccountTrait {
 /// The `Staker` struct represents a staker in the staking system.
 /// It includes the staker's account, reward account, and operational account.
 #[derive(Drop, Copy)]
-pub(crate) struct Staker {
+pub struct Staker {
     pub staker: Account,
     pub reward: Account,
     pub operational: Account,
@@ -483,7 +483,7 @@ impl StakerImpl of StakerTrait {
 }
 
 #[generate_trait]
-pub(crate) impl SystemStakerImpl<
+pub impl SystemStakerImpl<
     TTokenState, +TokenTrait<TTokenState>, +Drop<TTokenState>, +Copy<TTokenState>,
 > of SystemStakerTrait<TTokenState> {
     fn stake(
@@ -558,7 +558,7 @@ pub(crate) impl SystemStakerImpl<
 /// The `Delegator` struct represents a delegator in the staking system.
 /// It includes the delegator's account and reward account.
 #[derive(Drop, Copy)]
-pub(crate) struct Delegator {
+pub struct Delegator {
     pub delegator: Account,
     pub reward: Account,
 }
@@ -571,7 +571,7 @@ impl DelegatorImpl of DelegatorTrait {
 }
 
 #[generate_trait]
-pub(crate) impl SystemDelegatorImpl<
+pub impl SystemDelegatorImpl<
     TTokenState, +TokenTrait<TTokenState>, +Drop<TTokenState>, +Copy<TTokenState>,
 > of SystemDelegatorTrait<TTokenState> {
     fn delegate(
@@ -676,8 +676,8 @@ trait IMintableToken<TContractState> {
 /// The `STRKTokenState` struct represents the state of the `STRK` token contract.
 /// It includes the `STRK` token address.
 #[derive(Drop, Copy)]
-pub(crate) struct STRKTokenState {
-    pub(crate) address: ContractAddress,
+pub struct STRKTokenState {
+    pub address: ContractAddress,
 }
 
 impl STRKTTokenImpl of TokenTrait<STRKTokenState> {

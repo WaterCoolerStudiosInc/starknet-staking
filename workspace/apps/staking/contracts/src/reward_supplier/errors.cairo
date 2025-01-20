@@ -1,7 +1,7 @@
 use contracts_commons::errors::{Describable, ErrorDisplay};
 
 #[derive(Drop)]
-pub(crate) enum Error {
+pub enum Error {
     ON_RECEIVE_NOT_FROM_STARKGATE,
     UNEXPECTED_TOKEN,
 }

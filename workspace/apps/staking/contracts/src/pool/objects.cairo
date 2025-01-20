@@ -20,7 +20,7 @@ pub struct InternalPoolMemberInfo {
     pub unpool_time: Option<Timestamp>,
 }
 
-pub(crate) impl InternalPoolMemberInfoInto of Into<InternalPoolMemberInfo, PoolMemberInfo> {
+pub impl InternalPoolMemberInfoInto of Into<InternalPoolMemberInfo, PoolMemberInfo> {
     #[inline(always)]
     fn into(self: InternalPoolMemberInfo) -> PoolMemberInfo {
         PoolMemberInfo {

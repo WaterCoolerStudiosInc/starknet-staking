@@ -1,2 +1,2 @@
-pub(crate) mod errors;
+pub mod errors;
 pub mod time;

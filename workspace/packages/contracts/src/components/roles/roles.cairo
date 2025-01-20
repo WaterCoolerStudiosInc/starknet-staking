@@ -1,5 +1,5 @@
 #[starknet::component]
-pub(crate) mod RolesComponent {
+pub mod RolesComponent {
     use RolesInterface::{
         APP_GOVERNOR, APP_ROLE_ADMIN, AppGovernorAdded, AppGovernorRemoved, AppRoleAdminAdded,
         AppRoleAdminRemoved, GOVERNANCE_ADMIN, GovernanceAdminAdded, GovernanceAdminRemoved, IRoles,

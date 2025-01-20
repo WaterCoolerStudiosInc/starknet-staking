@@ -1,5 +1,5 @@
 #[starknet::contract]
-pub(crate) mod ReplaceabilityMock {
+pub mod ReplaceabilityMock {
     use RolesComponent::InternalTrait as RolesInternalTrait;
     use contracts_commons::components::replaceability::ReplaceabilityComponent;
     use contracts_commons::components::roles::RolesComponent;
@@ -26,7 +26,7 @@ pub(crate) mod ReplaceabilityMock {
 
     #[event]
     #[derive(Drop, starknet::Event)]
-    pub(crate) enum Event {
+    pub enum Event {
         ReplaceabilityEvent: ReplaceabilityComponent::Event,
         RolesEvent: RolesComponent::Event,
         AccessControlEvent: AccessControlComponent::Event,

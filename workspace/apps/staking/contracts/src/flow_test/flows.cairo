@@ -12,7 +12,7 @@ use staking::flow_test::utils::{
 /// Staker increase_stake - cover pool amount > 0 in calc_rew
 /// Delegator increase_delegate
 /// Exit and check
-pub(crate) fn basic_stake_flow(ref system: SystemState<TokenState>) {
+pub fn basic_stake_flow(ref system: SystemState<TokenState>) {
     let min_stake = system.staking.get_min_stake();
     let stake_amount = min_stake * 2;
     let one_week = Time::weeks(count: 1);

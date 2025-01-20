@@ -1,5 +1,5 @@
-pub(crate) mod bit_mask;
-pub(crate) mod bit_set;
+pub mod bit_mask;
+pub mod bit_set;
 
 pub mod components;
 
@@ -7,7 +7,7 @@ pub mod constants;
 
 // Make the module be available in the starknet-contract target.
 #[cfg(target: 'test')]
-pub(crate) mod erc20_mocks;
+pub mod erc20_mocks;
 
 // Consts and other non-component utilities
 pub mod errors;

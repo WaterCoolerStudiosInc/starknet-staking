@@ -1,6 +1,6 @@
 // A dummy contract used for testing EIC.
 #[starknet::contract]
-pub(crate) mod EICTestContract {
+pub mod EICTestContract {
     use contracts_commons::components::replaceability::interface::IEICInitializable;
 
     #[storage]

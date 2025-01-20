@@ -2,7 +2,7 @@ use contracts_commons::errors::{Describable, ErrorDisplay};
 use staking::staking::staking::Staking::COMMISSION_DENOMINATOR;
 
 #[derive(Drop)]
-pub(crate) enum Error {
+pub enum Error {
     AMOUNT_LESS_THAN_MIN_STAKE,
     COMMISSION_OUT_OF_RANGE,
     UNSTAKE_IN_PROGRESS,

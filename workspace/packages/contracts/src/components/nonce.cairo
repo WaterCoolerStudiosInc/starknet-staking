@@ -1,5 +1,5 @@
 pub mod interface;
-pub(crate) mod nonce;
+pub mod nonce;
 
 pub use nonce::NonceComponent;
 #[cfg(test)]

@@ -964,7 +964,7 @@ pub mod Staking {
     }
 
     #[generate_trait]
-    pub(crate) impl InternalStakingFunctions of InternalStakingFunctionsTrait {
+    pub impl InternalStakingFunctions of InternalStakingFunctionsTrait {
         fn send_rewards(
             self: @ContractState,
             reward_address: ContractAddress,

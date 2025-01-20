@@ -11,7 +11,7 @@ use staking::types::{Amount, Index};
 use starknet::ContractAddress;
 
 #[derive(Hash, Drop, Serde, Copy, starknet::Store)]
-pub(crate) struct UndelegateIntentKey {
+pub struct UndelegateIntentKey {
     pub pool_contract: ContractAddress,
     // The identifier is generally the pool member address, but it can be any unique identifier,
     // depending on the logic of the pool contract.
@@ -19,12 +19,12 @@ pub(crate) struct UndelegateIntentKey {
 }
 
 #[derive(Debug, PartialEq, Drop, Serde, Copy, starknet::Store)]
-pub(crate) struct UndelegateIntentValue {
+pub struct UndelegateIntentValue {
     pub unpool_time: Timestamp,
     pub amount: Amount,
 }
 
-pub(crate) impl UndelegateIntentValueZero of core::num::traits::Zero<UndelegateIntentValue> {
+pub impl UndelegateIntentValueZero of core::num::traits::Zero<UndelegateIntentValue> {
     fn zero() -> UndelegateIntentValue {
         UndelegateIntentValue { unpool_time: Zero::zero(), amount: Zero::zero() }
     }
@@ -39,29 +39,29 @@ pub(crate) impl UndelegateIntentValueZero of core::num::traits::Zero<UndelegateI
 }
 
 #[derive(Debug, PartialEq, Drop, Serde, Copy, starknet::Store)]
-pub(crate) struct InternalStakerInfo {
-    pub(crate) reward_address: ContractAddress,
-    pub(crate) operational_address: ContractAddress,
-    pub(crate) unstake_time: Option<Timestamp>,
-    pub(crate) amount_own: Amount,
-    pub(crate) index: Index,
-    pub(crate) unclaimed_rewards_own: Amount,
-    pub(crate) pool_info: Option<StakerPoolInfo>,
+pub struct InternalStakerInfo {
+    pub reward_address: ContractAddress,
+    pub operational_address: ContractAddress,
+    pub unstake_time: Option<Timestamp>,
+    pub amount_own: Amount,
+    pub index: Index,
+    pub unclaimed_rewards_own: Amount,
+    pub pool_info: Option<StakerPoolInfo>,
 }
 
 #[derive(Debug, PartialEq, Drop, Serde, Copy, starknet::Store)]
-pub(crate) struct InternalStakerInfoV1 {
-    pub(crate) reward_address: ContractAddress,
-    pub(crate) operational_address: ContractAddress,
-    pub(crate) unstake_time: Option<Timestamp>,
-    pub(crate) amount_own: Amount,
-    pub(crate) index: Index,
-    pub(crate) unclaimed_rewards_own: Amount,
-    pub(crate) pool_info: Option<StakerPoolInfo>,
+pub struct InternalStakerInfoV1 {
+    pub reward_address: ContractAddress,
+    pub operational_address: ContractAddress,
+    pub unstake_time: Option<Timestamp>,
+    pub amount_own: Amount,
+    pub index: Index,
+    pub unclaimed_rewards_own: Amount,
+    pub pool_info: Option<StakerPoolInfo>,
 }
 
 #[derive(Debug, PartialEq, Serde, Drop, Copy, starknet::Store)]
-pub(crate) enum VersionedInternalStakerInfo {
+pub enum VersionedInternalStakerInfo {
     V0: InternalStakerInfo,
     #[default]
     None,
@@ -69,7 +69,7 @@ pub(crate) enum VersionedInternalStakerInfo {
 }
 
 #[generate_trait]
-pub(crate) impl InternalStakerInfoV1Impl of InternalStakerInfoV1Trait {
+pub impl InternalStakerInfoV1Impl of InternalStakerInfoV1Trait {
     fn compute_unpool_time(self: @InternalStakerInfoV1, exit_wait_window: TimeDelta) -> Timestamp {
         if let Option::Some(unstake_time) = *self.unstake_time {
             return max(unstake_time, Time::now());
@@ -82,7 +82,7 @@ pub(crate) impl InternalStakerInfoV1Impl of InternalStakerInfoV1Trait {
     }
 }
 
-pub(crate) impl InternalStakerInfoV1IntoStakerInfo of Into<InternalStakerInfoV1, StakerInfo> {
+pub impl InternalStakerInfoV1IntoStakerInfo of Into<InternalStakerInfoV1, StakerInfo> {
     #[inline(always)]
     fn into(self: InternalStakerInfoV1) -> StakerInfo nopanic {
         StakerInfo {
@@ -98,7 +98,7 @@ pub(crate) impl InternalStakerInfoV1IntoStakerInfo of Into<InternalStakerInfoV1,
 }
 
 #[generate_trait]
-pub(crate) impl UndelegateIntentValueImpl of UndelegateIntentValueTrait {
+pub impl UndelegateIntentValueImpl of UndelegateIntentValueTrait {
     fn is_valid(self: @UndelegateIntentValue) -> bool {
         // The value is valid if and only if unpool_time and amount are both zero or both non-zero.
         self.unpool_time.is_zero() == self.amount.is_zero()
@@ -110,7 +110,7 @@ pub(crate) impl UndelegateIntentValueImpl of UndelegateIntentValueTrait {
 }
 
 #[generate_trait]
-pub(crate) impl VersionedInternalStakerInfoImpl of VersionedInternalStakerInfoTrait {
+pub impl VersionedInternalStakerInfoImpl of VersionedInternalStakerInfoTrait {
     fn is_none(self: @VersionedInternalStakerInfo) -> bool nopanic {
         match *self {
             VersionedInternalStakerInfo::None => true,
@@ -153,7 +153,7 @@ pub(crate) impl VersionedInternalStakerInfoImpl of VersionedInternalStakerInfoTr
     }
 }
 
-pub(crate) impl InternalStakerInfoIntoInternalStakerInfoV1 of Into<
+pub impl InternalStakerInfoIntoInternalStakerInfoV1 of Into<
     InternalStakerInfo, InternalStakerInfoV1,
 > {
     #[inline(always)]

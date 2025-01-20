@@ -1,5 +1,5 @@
 #[cfg(test)]
-pub(crate) mod flows;
+pub mod flows;
 #[cfg(test)]
 mod test;
 #[cfg(test)]

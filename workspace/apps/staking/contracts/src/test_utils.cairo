@@ -38,7 +38,7 @@ use staking::types::{Amount, Commission, Index};
 use staking::utils::{compute_commission_amount_rounded_up, compute_rewards_rounded_down};
 use starknet::{ClassHash, ContractAddress, Store};
 
-pub(crate) mod constants {
+pub mod constants {
     use staking::constants::STRK_IN_FRIS;
     use staking::types::{Amount, Commission, Index};
     use starknet::class_hash::{ClassHash, class_hash_const};
@@ -182,7 +182,7 @@ pub(crate) mod constants {
         contract_address_const::<'WORK_CONTRACT_ADDRESS'>()
     }
 }
-pub(crate) fn initialize_staking_state_from_cfg(
+pub fn initialize_staking_state_from_cfg(
     ref cfg: StakingInitConfig,
 ) -> Staking::ContractState {
     let token_address = deploy_mock_erc20_contract(
@@ -198,7 +198,7 @@ pub(crate) fn initialize_staking_state_from_cfg(
         governance_admin: cfg.test_info.governance_admin,
     )
 }
-pub(crate) fn initialize_staking_state(
+pub fn initialize_staking_state(
     token_address: ContractAddress,
     min_stake: Amount,
     pool_contract_class_hash: ClassHash,
@@ -221,7 +221,7 @@ pub(crate) fn initialize_staking_state(
 }
 
 
-pub(crate) fn initialize_pool_state(
+pub fn initialize_pool_state(
     staker_address: ContractAddress,
     staking_contract: ContractAddress,
     token_address: ContractAddress,
@@ -240,7 +240,7 @@ pub(crate) fn initialize_pool_state(
     state
 }
 
-pub(crate) fn initialize_minting_curve_state(
+pub fn initialize_minting_curve_state(
     staking_contract: ContractAddress,
     total_supply: Amount,
     l1_reward_supplier: felt252,
@@ -253,7 +253,7 @@ pub(crate) fn initialize_minting_curve_state(
     state
 }
 
-pub(crate) fn initialize_reward_supplier_state_from_cfg(
+pub fn initialize_reward_supplier_state_from_cfg(
     token_address: ContractAddress, cfg: StakingInitConfig,
 ) -> RewardSupplier::ContractState {
     initialize_reward_supplier_state(
@@ -266,7 +266,7 @@ pub(crate) fn initialize_reward_supplier_state_from_cfg(
         governance_admin: cfg.test_info.governance_admin,
     )
 }
-pub(crate) fn initialize_reward_supplier_state(
+pub fn initialize_reward_supplier_state(
     base_mint_amount: Amount,
     minting_curve_contract: ContractAddress,
     staking_contract: ContractAddress,
@@ -289,7 +289,7 @@ pub(crate) fn initialize_reward_supplier_state(
     state
 }
 
-pub(crate) fn deploy_mock_erc20_contract(
+pub fn deploy_mock_erc20_contract(
     initial_supply: u256, owner_address: ContractAddress,
 ) -> ContractAddress {
     let mut calldata = ArrayTrait::new();
@@ -302,7 +302,7 @@ pub(crate) fn deploy_mock_erc20_contract(
     token_address
 }
 
-pub(crate) fn deploy_staking_contract(
+pub fn deploy_staking_contract(
     token_address: ContractAddress, cfg: StakingInitConfig,
 ) -> ContractAddress {
     let mut calldata = ArrayTrait::new();
@@ -318,7 +318,7 @@ pub(crate) fn deploy_staking_contract(
     staking_contract_address
 }
 
-pub(crate) fn set_default_roles(staking_contract: ContractAddress, cfg: StakingInitConfig) {
+pub fn set_default_roles(staking_contract: ContractAddress, cfg: StakingInitConfig) {
     set_account_as_security_admin(
         contract: staking_contract,
         account: cfg.test_info.security_admin,
@@ -341,7 +341,7 @@ pub(crate) fn set_default_roles(staking_contract: ContractAddress, cfg: StakingI
     );
 }
 
-pub(crate) fn deploy_minting_curve_contract(cfg: StakingInitConfig) -> ContractAddress {
+pub fn deploy_minting_curve_contract(cfg: StakingInitConfig) -> ContractAddress {
     let mut calldata = ArrayTrait::new();
     let initial_supply: Amount = cfg
         .test_info
@@ -367,7 +367,7 @@ pub(crate) fn deploy_minting_curve_contract(cfg: StakingInitConfig) -> ContractA
     minting_curve_contract_address
 }
 
-pub(crate) fn deploy_reward_supplier_contract(cfg: StakingInitConfig) -> ContractAddress {
+pub fn deploy_reward_supplier_contract(cfg: StakingInitConfig) -> ContractAddress {
     let mut calldata = ArrayTrait::new();
     cfg.reward_supplier.base_mint_amount.serialize(ref calldata);
     cfg.reward_supplier.minting_curve_contract.serialize(ref calldata);
@@ -381,7 +381,7 @@ pub(crate) fn deploy_reward_supplier_contract(cfg: StakingInitConfig) -> Contrac
     reward_supplier_contract_address
 }
 
-pub(crate) fn deploy_work_contract(cfg: StakingInitConfig) -> ContractAddress {
+pub fn deploy_work_contract(cfg: StakingInitConfig) -> ContractAddress {
     let mut calldata = ArrayTrait::new();
     cfg.test_info.staking_contract.serialize(ref calldata);
     let work_contract = snforge_std::declare("Work").unwrap().contract_class();
@@ -389,11 +389,11 @@ pub(crate) fn deploy_work_contract(cfg: StakingInitConfig) -> ContractAddress {
     work_contract_address
 }
 
-pub(crate) fn declare_pool_contract() -> ClassHash {
+pub fn declare_pool_contract() -> ClassHash {
     *snforge_std::declare("Pool").unwrap().contract_class().class_hash
 }
 
-pub(crate) fn fund(
+pub fn fund(
     sender: ContractAddress,
     recipient: ContractAddress,
     amount: Amount,
@@ -404,7 +404,7 @@ pub(crate) fn fund(
     token_dispatcher.transfer(:recipient, amount: amount.into());
 }
 
-pub(crate) fn approve(
+pub fn approve(
     owner: ContractAddress,
     spender: ContractAddress,
     amount: Amount,
@@ -415,7 +415,7 @@ pub(crate) fn approve(
     token_dispatcher.approve(:spender, amount: amount.into());
 }
 
-pub(crate) fn fund_and_approve_for_stake(
+pub fn fund_and_approve_for_stake(
     cfg: StakingInitConfig, staking_contract: ContractAddress, token_address: ContractAddress,
 ) {
     fund(
@@ -433,7 +433,7 @@ pub(crate) fn fund_and_approve_for_stake(
 }
 
 // Stake according to the given configuration, the staker is cfg.test_info.staker_address.
-pub(crate) fn stake_for_testing(
+pub fn stake_for_testing(
     ref state: ContractState, cfg: StakingInitConfig, token_address: ContractAddress,
 ) {
     let staking_contract = test_address();
@@ -451,7 +451,7 @@ pub(crate) fn stake_for_testing(
         );
 }
 
-pub(crate) fn stake_for_testing_using_dispatcher(
+pub fn stake_for_testing_using_dispatcher(
     cfg: StakingInitConfig, token_address: ContractAddress, staking_contract: ContractAddress,
 ) {
     fund_and_approve_for_stake(:cfg, :staking_contract, :token_address);
@@ -469,7 +469,7 @@ pub(crate) fn stake_for_testing_using_dispatcher(
         );
 }
 
-pub(crate) fn stake_from_zero_address(
+pub fn stake_from_zero_address(
     cfg: StakingInitConfig, token_address: ContractAddress, staking_contract: ContractAddress,
 ) {
     cheat_caller_address_once(
@@ -486,7 +486,7 @@ pub(crate) fn stake_from_zero_address(
         );
 }
 
-pub(crate) fn stake_with_pool_enabled(
+pub fn stake_with_pool_enabled(
     mut cfg: StakingInitConfig, token_address: ContractAddress, staking_contract: ContractAddress,
 ) -> ContractAddress {
     cfg.test_info.pool_enabled = true;
@@ -499,7 +499,7 @@ pub(crate) fn stake_with_pool_enabled(
     pool_contract
 }
 
-pub(crate) fn enter_delegation_pool_for_testing_using_dispatcher(
+pub fn enter_delegation_pool_for_testing_using_dispatcher(
     pool_contract: ContractAddress, cfg: StakingInitConfig, token_address: ContractAddress,
 ) {
     // Transfer the stake amount to the pool member.
@@ -538,7 +538,7 @@ pub(crate) fn enter_delegation_pool_for_testing_using_dispatcher(
 /// The trait used to serialize and deserialize the value for the storage is Store trait.
 /// The trait used to serialize and deserialize the key and value in this function is Serde trait.
 /// Note: It could work for non-simple types that implement Hash, Store and Serde the same way.
-pub(crate) fn load_from_simple_map<K, +Serde<K>, +Copy<K>, +Drop<K>, V, +Serde<V>, +Store<V>>(
+pub fn load_from_simple_map<K, +Serde<K>, +Copy<K>, +Drop<K>, V, +Serde<V>, +Store<V>>(
     map_selector: felt252, key: K, contract: ContractAddress,
 ) -> V {
     let mut keys = array![];
@@ -559,7 +559,7 @@ pub(crate) fn load_from_simple_map<K, +Serde<K>, +Copy<K>, +Drop<K>, V, +Serde<V
 /// The trait used to serialize and deserialize the value for the storage is Store trait.
 /// The trait used to serialize and deserialize the key and value in this function is Serde trait.
 /// Note: It could work for non-simple types that implement Hash, Store and Serde the same way.
-pub(crate) fn store_to_simple_map<
+pub fn store_to_simple_map<
     K, +Serde<K>, +Copy<K>, +Drop<K>, V, +Serde<V>, +Store<V>, +Drop<V>,
 >(
     map_selector: felt252, key: K, contract: ContractAddress, value: V,
@@ -574,7 +574,7 @@ pub(crate) fn store_to_simple_map<
 }
 
 // This only works for shallow Option. i.e. if within V there is an Option, this will fail.
-pub(crate) fn load_option_from_simple_map<
+pub fn load_option_from_simple_map<
     K, +Serde<K>, +Copy<K>, +Drop<K>, V, +Serde<V>, +Store<Option<V>>,
 >(
     map_selector: felt252, key: K, contract: ContractAddress,
@@ -594,7 +594,7 @@ pub(crate) fn load_option_from_simple_map<
     }
 }
 
-pub(crate) fn load_pool_member_info_from_map<K, +Serde<K>, +Copy<K>, +Drop<K>>(
+pub fn load_pool_member_info_from_map<K, +Serde<K>, +Copy<K>, +Drop<K>>(
     key: K, contract: ContractAddress,
 ) -> Option<InternalPoolMemberInfo> {
     let map_selector = selector!("pool_member_info");
@@ -633,12 +633,12 @@ pub(crate) fn load_pool_member_info_from_map<K, +Serde<K>, +Copy<K>, +Drop<K>>(
     return Option::Some(pool_member_info);
 }
 
-pub(crate) fn load_one_felt(target: ContractAddress, storage_address: felt252) -> felt252 {
+pub fn load_one_felt(target: ContractAddress, storage_address: felt252) -> felt252 {
     let value = snforge_std::load(:target, :storage_address, size: 1);
     *value[0]
 }
 
-pub(crate) fn general_contract_system_deployment(ref cfg: StakingInitConfig) {
+pub fn general_contract_system_deployment(ref cfg: StakingInitConfig) {
     // Deploy contracts: ERC20, MintingCurve, RewardSupplier, Staking.
     let token_address = deploy_mock_erc20_contract(
         initial_supply: cfg.test_info.initial_supply, owner_address: cfg.test_info.owner_address,
@@ -669,7 +669,7 @@ pub(crate) fn general_contract_system_deployment(ref cfg: StakingInitConfig) {
     cfg.test_info.work_contract = work_contract;
 }
 
-pub(crate) fn cheat_reward_for_reward_supplier(
+pub fn cheat_reward_for_reward_supplier(
     cfg: StakingInitConfig,
     reward_supplier: ContractAddress,
     expected_reward: Amount,
@@ -688,7 +688,7 @@ pub(crate) fn cheat_reward_for_reward_supplier(
     );
 }
 
-pub(crate) fn create_rewards_for_pool_member(ref cfg: StakingInitConfig) -> Amount {
+pub fn create_rewards_for_pool_member(ref cfg: StakingInitConfig) -> Amount {
     let index_before = cfg.pool_member_info.index;
     cfg.pool_member_info.index += BASE_VALUE;
     let updated_index = cfg.pool_member_info.index;
@@ -728,7 +728,7 @@ fn compute_unclaimed_rewards_member(
 }
 
 // Assumes the staking contract has already been deployed.
-pub(crate) fn pause_staking_contract(cfg: StakingInitConfig) {
+pub fn pause_staking_contract(cfg: StakingInitConfig) {
     let staking_contract = cfg.test_info.staking_contract;
     let staking_pause_dispatcher = IStakingPauseDispatcher { contract_address: staking_contract };
     cheat_caller_address_once(
@@ -737,7 +737,7 @@ pub(crate) fn pause_staking_contract(cfg: StakingInitConfig) {
     staking_pause_dispatcher.pause();
 }
 
-pub(crate) fn add_reward_for_reward_supplier(
+pub fn add_reward_for_reward_supplier(
     cfg: StakingInitConfig,
     reward_supplier: ContractAddress,
     reward: Amount,
@@ -762,7 +762,7 @@ pub(crate) fn add_reward_for_reward_supplier(
     );
 }
 
-pub(crate) fn load_staker_info_from_map(
+pub fn load_staker_info_from_map(
     staker_address: ContractAddress, contract: ContractAddress,
 ) -> VersionedInternalStakerInfo {
     let map_selector = selector!("staker_info");
@@ -808,7 +808,7 @@ fn deserialize_option<T, +Serde<T>, +Drop<T>>(ref data: Span<felt252>) -> Option
 }
 
 #[derive(Drop, Copy)]
-pub(crate) struct TestInfo {
+pub struct TestInfo {
     pub staker_address: ContractAddress,
     pub pool_member_address: ContractAddress,
     pub owner_address: ContractAddress,
@@ -837,7 +837,7 @@ struct RewardSupplierInfo {
 }
 
 #[derive(Drop, Copy)]
-pub(crate) struct StakingInitConfig {
+pub struct StakingInitConfig {
     pub staker_info: InternalStakerInfoV1,
     pub pool_member_info: InternalPoolMemberInfo,
     pub staking_contract_info: StakingContractInfo,

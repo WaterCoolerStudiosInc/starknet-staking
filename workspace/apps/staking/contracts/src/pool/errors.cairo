@@ -1,7 +1,7 @@
 use contracts_commons::errors::{Describable, ErrorDisplay};
 
 #[derive(Drop)]
-pub(crate) enum Error {
+pub enum Error {
     POOL_MEMBER_DOES_NOT_EXIST,
     STAKER_INACTIVE,
     POOL_MEMBER_EXISTS,

@@ -4,13 +4,13 @@ use core::num::traits::zero::Zero;
 use core::num::traits::{BitSize, Bounded};
 use core::starknet::storage_access::StorePacking;
 
-pub(crate) type BitSetU8 = BitSet<u8>;
-pub(crate) type BitSetU16 = BitSet<u16>;
-pub(crate) type BitSetU32 = BitSet<u32>;
-pub(crate) type BitSetU64 = BitSet<u64>;
+pub type BitSetU8 = BitSet<u8>;
+pub type BitSetU16 = BitSet<u16>;
+pub type BitSetU32 = BitSet<u32>;
+pub type BitSetU64 = BitSet<u64>;
 
 #[derive(Debug, Drop, PartialEq)]
-pub(crate) enum BitSetError {
+pub enum BitSetError {
     IndexOutOfBounds,
     InvalidBound,
 }
@@ -62,7 +62,7 @@ impl BitSetInternalImpl<T> of BitSetInternalTrait<T> {
     }
 }
 
-pub(crate) trait BitSetTrait<T> {
+pub trait BitSetTrait<T> {
     fn get(self: @BitSet<T>, index: usize) -> Result<bool, BitSetError>;
     fn set(ref self: BitSet<T>, index: usize, value: bool) -> Result<(), BitSetError>;
     fn count(self: @BitSet<T>) -> usize;

@@ -533,7 +533,7 @@ pub mod Pool {
     }
 
     #[generate_trait]
-    pub(crate) impl InternalPoolFunctions of InternalPoolFunctionsTrait {
+    pub impl InternalPoolFunctions of InternalPoolFunctionsTrait {
         fn internal_pool_member_info(
             self: @ContractState, pool_member: ContractAddress,
         ) -> InternalPoolMemberInfo {

@@ -1,7 +1,7 @@
 use contracts_commons::errors::{Describable, ErrorDisplay};
 
 #[derive(Drop)]
-pub(crate) enum TimeErrors {
+pub enum TimeErrors {
     TIMEDELTA_ADD_OVERFLOW,
     TIMEDELTA_SUB_UNDERFLOW,
     TIMESTAMP_ADD_OVERFLOW,

@@ -1,8 +1,8 @@
-pub(crate) mod errors;
+pub mod errors;
 
 pub mod interface;
 
-pub(crate) mod replaceability;
+pub mod replaceability;
 
 // shorthand for the use of ReplaceabilityComponent
 pub use replaceability::ReplaceabilityComponent;
@@ -11,10 +11,10 @@ pub use replaceability::ReplaceabilityComponent;
 mod eic_test_contract;
 
 // Due to an issue in snforge, it won't recognize the mock under #[cfg(test)].
-pub(crate) mod mock;
+pub mod mock;
 
 #[cfg(test)]
 mod test;
 
 #[cfg(test)]
-pub(crate) mod test_utils;
+pub mod test_utils;

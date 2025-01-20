@@ -2,7 +2,7 @@ use contracts_commons::errors::{Describable, ErrorDisplay};
 use staking::constants::MAX_C_NUM;
 
 #[derive(Drop)]
-pub(crate) enum Error {
+pub enum Error {
     TOTAL_SUPPLY_NOT_AMOUNT_TYPE,
     UNAUTHORIZED_MESSAGE_SENDER,
     C_NUM_OUT_OF_RANGE,

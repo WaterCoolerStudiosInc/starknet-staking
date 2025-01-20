@@ -11,40 +11,40 @@ use snforge_std::{ContractClassTrait, DeclareResultTrait, declare, load};
 use starknet::ContractAddress;
 use starknet::class_hash::ClassHash;
 
-pub(crate) mod Constants {
+pub mod Constants {
     use starknet::class_hash::class_hash_const;
     use starknet::contract_address_const;
     use super::{ContractAddress, ImplementationData};
 
-    pub(crate) const DEFAULT_UPGRADE_DELAY: u64 = 12345;
-    pub(crate) const EIC_UPGRADE_DELAY_ADDITION: u64 = 5;
+    pub const DEFAULT_UPGRADE_DELAY: u64 = 12345;
+    pub const EIC_UPGRADE_DELAY_ADDITION: u64 = 5;
 
-    pub(crate) fn CALLER_ADDRESS() -> ContractAddress {
+    pub fn CALLER_ADDRESS() -> ContractAddress {
         contract_address_const::<'CALLER_ADDRESS'>()
     }
 
-    pub(crate) fn GOVERNANCE_ADMIN() -> ContractAddress {
+    pub fn GOVERNANCE_ADMIN() -> ContractAddress {
         contract_address_const::<'GOVERNANCE_ADMIN'>()
     }
 
-    pub(crate) fn DUMMY_FINAL_IMPLEMENTATION_DATA() -> ImplementationData {
+    pub fn DUMMY_FINAL_IMPLEMENTATION_DATA() -> ImplementationData {
         ImplementationData {
             impl_hash: class_hash_const::<0>(), eic_data: Option::None(()), final: true,
         }
     }
 
-    pub(crate) fn DUMMY_NONFINAL_IMPLEMENTATION_DATA() -> ImplementationData {
+    pub fn DUMMY_NONFINAL_IMPLEMENTATION_DATA() -> ImplementationData {
         ImplementationData {
             impl_hash: class_hash_const::<0>(), eic_data: Option::None(()), final: false,
         }
     }
 
-    pub(crate) fn NOT_UPGRADE_GOVERNOR_ACCOUNT() -> ContractAddress {
+    pub fn NOT_UPGRADE_GOVERNOR_ACCOUNT() -> ContractAddress {
         contract_address_const::<'NOT_UPGRADE_GOVERNOR_ACCOUNT'>()
     }
 }
 
-pub(crate) fn deploy_replaceability_mock() -> IReplaceableDispatcher {
+pub fn deploy_replaceability_mock() -> IReplaceableDispatcher {
     let replaceable_contract = declare("ReplaceabilityMock").unwrap().contract_class();
     let (contract_address, _) = replaceable_contract
         .deploy(
@@ -60,13 +60,13 @@ mod DummyContract {
     struct Storage {}
 }
 
-pub(crate) fn deploy_dummy_contract() -> ContractAddress {
+pub fn deploy_dummy_contract() -> ContractAddress {
     let dummy_contract = declare("DummyContract").unwrap().contract_class();
     let (contract_address, _) = dummy_contract.deploy(@array![]).unwrap();
     contract_address
 }
 
-pub(crate) fn get_upgrade_governor_account(contract_address: ContractAddress) -> ContractAddress {
+pub fn get_upgrade_governor_account(contract_address: ContractAddress) -> ContractAddress {
     let caller_address: ContractAddress = Constants::CALLER_ADDRESS();
     set_caller_as_upgrade_governor(contract_address, caller_address);
     return caller_address;
@@ -78,19 +78,19 @@ fn set_caller_as_upgrade_governor(contract_address: ContractAddress, caller: Con
     roles_dispatcher.register_upgrade_governor(account: caller);
 }
 
-pub(crate) fn dummy_final_implementation_data_with_class_hash(
+pub fn dummy_final_implementation_data_with_class_hash(
     class_hash: ClassHash,
 ) -> ImplementationData {
     ImplementationData { impl_hash: class_hash, eic_data: Option::None(()), final: true }
 }
 
-pub(crate) fn dummy_nonfinal_implementation_data_with_class_hash(
+pub fn dummy_nonfinal_implementation_data_with_class_hash(
     class_hash: ClassHash,
 ) -> ImplementationData {
     ImplementationData { impl_hash: class_hash, eic_data: Option::None(()), final: false }
 }
 
-pub(crate) fn dummy_nonfinal_eic_implementation_data_with_class_hash(
+pub fn dummy_nonfinal_eic_implementation_data_with_class_hash(
     class_hash: ClassHash,
 ) -> ImplementationData {
     // Set the eic_init_data calldata.
@@ -102,7 +102,7 @@ pub(crate) fn dummy_nonfinal_eic_implementation_data_with_class_hash(
     ImplementationData { impl_hash: class_hash, eic_data: Option::Some(eic_data), final: false }
 }
 
-pub(crate) fn assert_implementation_replaced_event_emitted(
+pub fn assert_implementation_replaced_event_emitted(
     mut spied_event: @(ContractAddress, Event), implementation_data: ImplementationData,
 ) {
     let expected_event = @ReplaceabilityMock::Event::ReplaceabilityEvent(
@@ -113,7 +113,7 @@ pub(crate) fn assert_implementation_replaced_event_emitted(
     assert_expected_event_emitted(:spied_event, :expected_event);
 }
 
-pub(crate) fn assert_implementation_finalized_event_emitted(
+pub fn assert_implementation_finalized_event_emitted(
     mut spied_event: @(ContractAddress, Event), implementation_data: ImplementationData,
 ) {
     let expected_event = @ReplaceabilityMock::Event::ReplaceabilityEvent(
@@ -137,7 +137,7 @@ fn assert_expected_event_emitted(
     }
 }
 
-pub(crate) fn assert_finalized_status(expected: bool, contract_address: ContractAddress) {
+pub fn assert_finalized_status(expected: bool, contract_address: ContractAddress) {
     // load the finalized attribute from the storage of the given contract.
     let finalized = *load(
         target: contract_address, storage_address: selector!("finalized"), size: 1,

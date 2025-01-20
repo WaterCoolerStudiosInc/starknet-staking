@@ -1,7 +1,7 @@
 use contracts_commons::errors::{Describable, ErrorDisplay};
 
 #[derive(Drop)]
-pub(crate) enum ReplaceErrors {
+pub enum ReplaceErrors {
     FINALIZED,
     UNKNOWN_IMPLEMENTATION,
     NOT_ENABLED_YET,

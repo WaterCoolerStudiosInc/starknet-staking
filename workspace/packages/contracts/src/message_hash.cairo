@@ -9,7 +9,7 @@ pub trait OffchainMessageHash<T, S> {
     fn get_message_hash(self: @T, signer: S) -> felt252;
 }
 
-pub(crate) impl OffchainMessageHashImpl<
+pub impl OffchainMessageHashImpl<
     T, +StructHash<T>, impl metadata: SNIP12Metadata, S, +Hash<S, HashState>, +Drop<S>,
 > of OffchainMessageHash<T, S> {
     fn get_message_hash(self: @T, signer: S) -> felt252 {

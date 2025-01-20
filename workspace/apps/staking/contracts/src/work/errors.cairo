@@ -1,6 +1,6 @@
 use contracts_commons::errors::{Describable, ErrorDisplay};
 #[derive(Drop)]
-pub(crate) enum Error {
+pub enum Error {
     WORK_IS_DONE,
 }
 

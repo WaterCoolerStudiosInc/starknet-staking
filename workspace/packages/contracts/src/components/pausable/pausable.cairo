@@ -1,5 +1,5 @@
 #[starknet::component]
-pub(crate) mod PausableComponent {
+pub mod PausableComponent {
     use RolesComponent::InternalTrait as RolesInternalTrait;
     use contracts_commons::components::pausable::interface::IPausable;
     use contracts_commons::components::roles::RolesComponent;
